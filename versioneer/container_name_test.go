@@ -31,7 +31,7 @@ var _ = Describe("ContainerName", func() {
 		When("SoftwareVersion is empty", func() {
 			BeforeEach(func() {
 				artifact.SoftwareVersion = ""
-				expectedName = "quay.io/kairos/opensuse:leap-15.5-standard-amd64-generic-v2.4.2"
+				expectedName = "quay.io/kairos/opensuse:leap-15.5-standard-amd64-generic-nonuki-v2.4.2"
 			})
 
 			It("returns the name", func() {
@@ -43,7 +43,7 @@ var _ = Describe("ContainerName", func() {
 
 		When("SoftwareVersion is not empty", func() {
 			BeforeEach(func() {
-				expectedName = "quay.io/kairos/opensuse:leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.26.9-k3s1"
+				expectedName = "quay.io/kairos/opensuse:leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.26.9-k3s1"
 			})
 			It("returns the name", func() {
 				name, err := artifact.ContainerName(registryAndOrg)

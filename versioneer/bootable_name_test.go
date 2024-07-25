@@ -28,7 +28,7 @@ var _ = Describe("BootableName", func() {
 		When("SoftwareVersion is empty", func() {
 			BeforeEach(func() {
 				artifact.SoftwareVersion = ""
-				expectedName = "kairos-opensuse-leap-15.5-standard-amd64-generic-v2.4.2"
+				expectedName = "kairos-opensuse-leap-15.5-standard-amd64-generic-nonuki-v2.4.2"
 			})
 			It("returns the name", func() {
 				name, err := artifact.BootableName()
@@ -39,7 +39,7 @@ var _ = Describe("BootableName", func() {
 
 		When("SoftwareVersion is not empty", func() {
 			BeforeEach(func() {
-				expectedName = "kairos-opensuse-leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.26.9+k3s1"
+				expectedName = "kairos-opensuse-leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.26.9+k3s1"
 			})
 			It("returns the name", func() {
 				name, err := artifact.BootableName()

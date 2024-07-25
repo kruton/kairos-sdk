@@ -307,8 +307,8 @@ func (a *Artifact) commonName() (string, error) {
 		return "", err
 	}
 
-	result := fmt.Sprintf("%s-%s-%s-%s",
-		a.FlavorRelease, a.Variant, a.Arch, a.Model)
+	result := fmt.Sprintf("%s-%s-%s-%s-%s",
+		a.FlavorRelease, a.Variant, a.Arch, a.Model, a.BootType)
 
 	return result, nil
 }

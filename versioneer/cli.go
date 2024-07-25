@@ -35,6 +35,13 @@ var (
 		EnvVars: []string{EnvVarModel},
 	}
 
+	bootTypeFlag *cli.StringFlag = &cli.StringFlag{
+		Name:    "boot-type",
+		Value:   "",
+		Usage:   "the type of boot (uki or nonuki)",
+		EnvVars: []string{EnvVarBootType},
+	}
+
 	archFlag *cli.StringFlag = &cli.StringFlag{
 		Name:    "arch",
 		Value:   "",
@@ -112,7 +119,7 @@ func CliCommands() []*cli.Command {
 			Name:  "container-artifact-name",
 			Usage: "generates an artifact name for Kairos OCI images",
 			Flags: []cli.Flag{
-				flavorFlag, flavorReleaseFlag, variantFlag, modelFlag, archFlag,
+				flavorFlag, flavorReleaseFlag, variantFlag, modelFlag, bootTypeFlag, archFlag,
 				versionFlag, softwareVersionFlag, softwareVersionPrefixFlag, registryAndOrgFlag,
 			},
 			Action: func(cCtx *cli.Context) error {
@@ -131,7 +138,7 @@ func CliCommands() []*cli.Command {
 			Name:  "bootable-artifact-name",
 			Usage: "generates a name for bootable artifacts (e.g. iso files)",
 			Flags: []cli.Flag{
-				flavorFlag, flavorReleaseFlag, variantFlag, modelFlag, archFlag,
+				flavorFlag, flavorReleaseFlag, variantFlag, modelFlag, bootTypeFlag, archFlag,
 				versionFlag, softwareVersionFlag, softwareVersionPrefixFlag,
 			},
 			Action: func(cCtx *cli.Context) error {
@@ -150,7 +157,7 @@ func CliCommands() []*cli.Command {
 			Name:  "base-container-artifact-name",
 			Usage: "generates a name for base (not yet Kairos) images",
 			Flags: []cli.Flag{
-				flavorFlag, flavorReleaseFlag, variantFlag, modelFlag, archFlag,
+				flavorFlag, flavorReleaseFlag, variantFlag, modelFlag, bootTypeFlag, archFlag,
 				registryAndOrgFlag, idFlag,
 			},
 			Action: func(cCtx *cli.Context) error {
@@ -170,7 +177,7 @@ func CliCommands() []*cli.Command {
 			Name:  "os-release-variables",
 			Usage: "generates a set of variables to be appended in the /etc/os-release file",
 			Flags: []cli.Flag{
-				flavorFlag, flavorReleaseFlag, variantFlag, modelFlag, archFlag, versionFlag,
+				flavorFlag, flavorReleaseFlag, variantFlag, modelFlag, bootTypeFlag, archFlag, versionFlag,
 				softwareVersionFlag, softwareVersionPrefixFlag, registryAndOrgFlag, bugReportURLFlag, projectHomeURLFlag,
 				githubRepoFlag, familyFlag,
 			},
@@ -204,6 +211,7 @@ func artifactFromFlags(cCtx *cli.Context) Artifact {
 		Variant:               variantFlag.Get(cCtx),
 		Model:                 modelFlag.Get(cCtx),
 		Arch:                  archFlag.Get(cCtx),
+		BootType:              bootTypeFlag.Get(cCtx),
 		Version:               versionFlag.Get(cCtx),
 		SoftwareVersion:       softwareVersionFlag.Get(cCtx),
 		SoftwareVersionPrefix: softwareVersionPrefixFlag.Get(cCtx),

@@ -73,22 +73,22 @@ var _ = Describe("TagList", func() {
 		BeforeEach(func() {
 			tagList.Artifact = &artifact
 			tagList.Tags = []string{
-				"leap-15.5-standard-amd64-generic-v2.4.3-k3sv1.26.8-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.3-k3sv1.26.9-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-rc2-k3sv1.26.9-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.3-k3sv1.26.8-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.3-k3sv1.26.9-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc2-k3sv1.26.9-k3s1",
 				"aa-other-non-matching-tag",
-				"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.26.9-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.26.10-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-rc1-k3sv1.26.9-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.26.9-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.26.10-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc1-k3sv1.26.9-k3s1",
 			}
 			expectedSortedTags = []string{
 				"aa-other-non-matching-tag",
-				"leap-15.5-standard-amd64-generic-v2.4.2-rc1-k3sv1.26.9-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-rc2-k3sv1.26.9-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.26.9-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.26.10-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.3-k3sv1.26.8-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.3-k3sv1.26.9-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc1-k3sv1.26.9-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc2-k3sv1.26.9-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.26.9-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.26.10-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.3-k3sv1.26.8-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.3-k3sv1.26.9-k3s1",
 			}
 		})
 
@@ -133,8 +133,19 @@ var _ = Describe("TagList", func() {
 			tags := tagList.OtherVersions().Tags
 
 			Expect(tags).To(HaveExactElements(
-				"leap-15.5-standard-amd64-generic-v2.4.2-rc2-k3sv1.27.6-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.27.6-k3s1"))
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc2-k3sv1.27.6-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.27.6-k3s1"))
+		})
+
+		It("does not return tags with different boot type", func() {
+			// This should not match because it has a different boot type (uki)
+			tagList.Tags = append(tagList.Tags,
+				"leap-15.5-standard-amd64-generic-uki-v2.4.2-rc2-k3sv1.27.6-k3s1")
+			tags := tagList.OtherVersions().Tags
+
+			Expect(tags).To(HaveExactElements(
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc2-k3sv1.27.6-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.27.6-k3s1"))
 		})
 	})
 
@@ -157,7 +168,7 @@ var _ = Describe("TagList", func() {
 			tags := tagList.NewerVersions().Tags
 
 			Expect(tags).To(HaveExactElements(
-				"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.27.6-k3s1"))
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.27.6-k3s1"))
 		})
 	})
 
@@ -180,8 +191,8 @@ var _ = Describe("TagList", func() {
 			tags := tagList.OtherSoftwareVersions().Tags
 
 			Expect(tags).To(HaveExactElements(
-				"leap-15.5-standard-amd64-generic-v2.4.2-rc1-k3sv1.26.9-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-rc1-k3sv1.28.2-k3s1"))
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc1-k3sv1.26.9-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc1-k3sv1.28.2-k3s1"))
 		})
 	})
 
@@ -204,7 +215,7 @@ var _ = Describe("TagList", func() {
 			tags := tagList.NewerSofwareVersions().Tags
 
 			Expect(tags).To(HaveExactElements(
-				"leap-15.5-standard-amd64-generic-v2.4.2-rc1-k3sv1.28.2-k3s1"))
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc1-k3sv1.28.2-k3s1"))
 		})
 	})
 
@@ -227,14 +238,14 @@ var _ = Describe("TagList", func() {
 			tags := tagList.OtherAnyVersion().Tags
 
 			Expect(tags).To(HaveExactElements(
-				"leap-15.5-standard-amd64-generic-v2.4.2-rc1-k3sv1.26.9-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-rc1-k3sv1.28.2-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-rc2-k3sv1.28.2-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-rc2-k3sv1.26.9-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-rc2-k3sv1.27.6-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.27.6-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.26.9-k3s1",
-				"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.28.2-k3s1"))
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc1-k3sv1.26.9-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc1-k3sv1.28.2-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc2-k3sv1.28.2-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc2-k3sv1.26.9-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc2-k3sv1.27.6-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.27.6-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.26.9-k3s1",
+				"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.28.2-k3s1"))
 		})
 
 		It("returns a TagList that has the same RegistryAndOrg", func() {
@@ -264,13 +275,13 @@ var _ = Describe("TagList", func() {
 				tags := tagList.NewerAnyVersion().Tags
 
 				Expect(tags).To(HaveExactElements(
-					"leap-15.5-standard-amd64-generic-v2.4.2-rc1-k3sv1.28.2-k3s1",
-					"leap-15.5-standard-amd64-generic-v2.4.2-rc2-k3sv1.28.2-k3s1",
-					"leap-15.5-standard-amd64-generic-v2.4.2-rc2-k3sv1.26.9-k3s1",
-					"leap-15.5-standard-amd64-generic-v2.4.2-rc2-k3sv1.27.6-k3s1",
-					"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.27.6-k3s1",
-					"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.26.9-k3s1",
-					"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.28.2-k3s1"))
+					"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc1-k3sv1.28.2-k3s1",
+					"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc2-k3sv1.28.2-k3s1",
+					"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc2-k3sv1.26.9-k3s1",
+					"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-rc2-k3sv1.27.6-k3s1",
+					"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.27.6-k3s1",
+					"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.26.9-k3s1",
+					"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.28.2-k3s1"))
 			})
 
 			It("returns a TagList that has the same RegistryAndOrg", func() {
@@ -299,8 +310,8 @@ var _ = Describe("TagList", func() {
 				tags := tagList.NewerAnyVersion().Tags
 
 				Expect(tags).To(HaveExactElements(
-					"leap-15.5-core-amd64-generic-v2.4.2-rc2",
-					"leap-15.5-core-amd64-generic-v2.4.2"))
+					"leap-15.5-core-amd64-generic-nonuki-v2.4.2-rc2",
+					"leap-15.5-core-amd64-generic-nonuki-v2.4.2"))
 			})
 		})
 	})
@@ -323,7 +334,7 @@ var _ = Describe("TagList", func() {
 			It("returns only stable releases for Version", func() {
 				tags := tagList.NoPrereleases().Tags
 
-				Expect(tags).To(HaveExactElements("leap-15.5-core-amd64-generic-v2.4.2"))
+				Expect(tags).To(HaveExactElements("leap-15.5-core-amd64-generic-nonuki-v2.4.2"))
 			})
 
 			It("returns a TagList that has the same RegistryAndOrg", func() {
@@ -352,9 +363,9 @@ var _ = Describe("TagList", func() {
 				tags := tagList.NoPrereleases().Tags
 
 				Expect(tags).To(HaveExactElements(
-					"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.27.6-k3s1",
-					"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.26.9-k3s1",
-					"leap-15.5-standard-amd64-generic-v2.4.2-k3sv1.28.2-k3s1",
+					"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.27.6-k3s1",
+					"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.26.9-k3s1",
+					"leap-15.5-standard-amd64-generic-nonuki-v2.4.2-k3sv1.28.2-k3s1",
 				))
 			})
 		})
