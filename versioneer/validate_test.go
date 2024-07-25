@@ -16,6 +16,7 @@ var _ = Describe("Validate", func() {
 			Model:         "generic",
 			Arch:          "amd64",
 			Version:       "v2.4.2",
+			BootType:      versioneer.BootTypeUKI,
 		}
 	})
 
@@ -50,5 +51,11 @@ var _ = Describe("Validate", func() {
 		artifact.SoftwareVersionPrefix = ""
 
 		Expect(artifact.Validate()).To(MatchError("SoftwareVersionPrefix should be defined when SoftwareVersion is not empty"))
+	})
+
+	It("returns an error when BootType is neither uki nor nonuki", func() {
+		artifact.BootType = "something_else"
+
+		Expect(artifact.Validate()).To(MatchError("BootType 'something_else' is invalid"))
 	})
 })

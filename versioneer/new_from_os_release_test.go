@@ -1,6 +1,7 @@
 package versioneer_test
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/kairos-io/kairos-sdk/versioneer"
@@ -24,6 +25,7 @@ var _ = Describe("NewArtifactFromOSRelease", func() {
 			"KAIROS_TARGETARCH=amd64\n" +
 			"KAIROS_MODEL=generic\n" +
 			"KAIROS_RELEASE=v2.4.2\n" +
+			fmt.Sprintf("KAIROS_BOOT_TYPE=%s\n", versioneer.BootTypeUKI) +
 			"KAIROS_SOFTWARE_VERSION=v1.26.9+k3s1\n" +
 			"KAIROS_SOFTWARE_VERSION_PREFIX=k3s\n"
 
@@ -48,6 +50,7 @@ var _ = Describe("NewArtifactFromOSRelease", func() {
 		Expect(artifact.Version).To(Equal("v2.4.2"))
 		Expect(artifact.SoftwareVersion).To(Equal("v1.26.9+k3s1"))
 		Expect(artifact.SoftwareVersionPrefix).To(Equal("k3s"))
+		Expect(artifact.BootType).To(Equal(versioneer.BootTypeUKI))
 		Expect(artifact.Validate()).ToNot(HaveOccurred())
 	})
 })

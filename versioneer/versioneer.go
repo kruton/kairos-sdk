@@ -19,6 +19,7 @@ const (
 	EnvVarVariant               = "VARIANT"
 	EnvVarModel                 = "MODEL"
 	EnvVarArch                  = "TARGETARCH"
+	EnvVarBootType              = "BOOT_TYPE"
 	EnvVarSoftwareVersion       = "SOFTWARE_VERSION"
 	EnvVarSoftwareVersionPrefix = "SOFTWARE_VERSION_PREFIX"
 	EnvVarRegistryAndOrg        = "REGISTRY_AND_ORG"
@@ -27,6 +28,9 @@ const (
 	EnvVarBugReportURL          = "BUG_REPORT_URL"
 	EnvVarHomeURL               = "HOME_URL"
 	EnvVarFamily                = "FAMILY"
+
+	BootTypeUKI    = "uki"
+	BootTypeNonUKI = "nonuki"
 )
 
 type Artifact struct {
@@ -39,6 +43,7 @@ type Artifact struct {
 	Version               string // The Kairos version. E.g. "v2.4.2"
 	SoftwareVersion       string // The k3s version. E.g. "v1.26.9+k3s1"
 	SoftwareVersionPrefix string // E.g. k3s
+	BootType              string
 	RegistryInspector     RegistryInspector
 }
 
@@ -79,6 +84,9 @@ func NewArtifactFromOSRelease(file ...string) (*Artifact, error) {
 	if result.Version, err = utils.OSRelease(EnvVarVersion, file...); err != nil {
 		return nil, err
 	}
+	if result.BootType, err = utils.OSRelease(EnvVarBootType, file...); err != nil {
+		return nil, err
+	}
 
 	// Optional, could be missing
 	result.SoftwareVersion, err = utils.OSRelease(EnvVarSoftwareVersion, file...)
@@ -112,6 +120,17 @@ func (a *Artifact) ValidateBase() error {
 	}
 	if a.Arch == "" {
 		return errors.New("Arch is empty")
+	}
+
+	validBootType := false
+	for _, t := range []string{BootTypeUKI, BootTypeNonUKI} {
+		if a.BootType == t {
+			validBootType = true
+			break
+		}
+	}
+	if !validBootType {
+		return fmt.Errorf("BootType '%s' is invalid", a.BootType)
 	}
 
 	if a.SoftwareVersion != "" && a.SoftwareVersionPrefix == "" {
@@ -241,29 +260,30 @@ func (a *Artifact) OSReleaseVariables(registryAndOrg, githubRepo, bugURL, homeUR
 		"KAIROS_IMAGE_LABEL": tag,
 		"KAIROS_ARTIFACT":    bootableName,
 		// Actively used variables
-		"KAIROS_FLAVOR":           a.Flavor,
-		"KAIROS_FLAVOR_RELEASE":   a.FlavorRelease,
-		"KAIROS_FAMILY":           a.Family,
-		"KAIROS_VARIANT":          a.Variant,
-		"KAIROS_MODEL":            a.Model,
-		"KAIROS_TARGETARCH":       a.Arch,
-		"KAIROS_RELEASE":          a.Version,
-		"KAIROS_REGISTRY_AND_ORG": registryAndOrg,
+		prefixedEnv(EnvVarFlavor):         a.Flavor,
+		prefixedEnv(EnvVarFlavorRelease):  a.FlavorRelease,
+		prefixedEnv(EnvVarFamily):         a.Family,
+		prefixedEnv(EnvVarVariant):        a.Variant,
+		prefixedEnv(EnvVarModel):          a.Model,
+		prefixedEnv(EnvVarArch):           a.Arch,
+		prefixedEnv(EnvVarVersion):        a.Version,
+		prefixedEnv(EnvVarBootType):       a.BootType,
+		prefixedEnv(EnvVarRegistryAndOrg): registryAndOrg,
 	}
 	if bugURL != "" {
-		vars["KAIROS_BUG_REPORT_URL"] = bugURL
+		vars[prefixedEnv(EnvVarBugReportURL)] = bugURL
 	}
 	if homeURL != "" {
-		vars["KAIROS_HOME_URL"] = homeURL
+		vars[prefixedEnv(EnvVarHomeURL)] = homeURL
 	}
 	if githubRepo != "" {
-		vars["KAIROS_GITHUB_REPO"] = githubRepo
+		vars[prefixedEnv(EnvVarGithubRepo)] = githubRepo
 	}
 	if a.SoftwareVersion != "" {
-		vars["KAIROS_SOFTWARE_VERSION"] = a.SoftwareVersion
+		vars[prefixedEnv(EnvVarSoftwareVersion)] = a.SoftwareVersion
 	}
 	if a.SoftwareVersionPrefix != "" {
-		vars["KAIROS_SOFTWARE_VERSION_PREFIX"] = a.SoftwareVersionPrefix
+		vars[prefixedEnv(EnvVarSoftwareVersionPrefix)] = a.SoftwareVersionPrefix
 	}
 
 	result := ""
@@ -310,4 +330,8 @@ func (a *Artifact) commonVersionedName() (string, error) {
 	}
 
 	return result, nil
+}
+
+func prefixedEnv(envVar string) string {
+	return fmt.Sprintf("KAIROS_%s", envVar)
 }

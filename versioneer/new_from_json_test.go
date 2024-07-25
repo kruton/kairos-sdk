@@ -16,7 +16,8 @@ var _ = Describe("NewArtifactFromJSON", func() {
 			"model":"generic",
 			"arch":"amd64",
 			"version":"v2.4.2",
-			"softwareVersion":"k3sv1.26.9+k3s1"
+			"softwareVersion":"k3sv1.26.9+k3s1",
+			"bootType":"uki"
 		}`
 
 		artifact, err := versioneer.NewArtifactFromJSON(jsonStr)

@@ -27,6 +27,7 @@ var _ = Describe("TagList", func() {
 			Version:               "v2.4.2",
 			SoftwareVersion:       "v1.26.9+k3s1",
 			SoftwareVersionPrefix: "k3s",
+			BootType:              versioneer.BootTypeNonUKI,
 		}
 
 	})
@@ -124,6 +125,7 @@ var _ = Describe("TagList", func() {
 				Version:               "v2.4.2-rc1",
 				SoftwareVersion:       "v1.27.6+k3s1",
 				SoftwareVersionPrefix: "k3s",
+				BootType:              versioneer.BootTypeNonUKI,
 			}
 		})
 
@@ -147,6 +149,7 @@ var _ = Describe("TagList", func() {
 				Version:               "v2.4.2-rc2",
 				SoftwareVersion:       "v1.27.6+k3s1",
 				SoftwareVersionPrefix: "k3s",
+				BootType:              versioneer.BootTypeNonUKI,
 			}
 		})
 
@@ -169,6 +172,7 @@ var _ = Describe("TagList", func() {
 				Version:               "v2.4.2-rc1",
 				SoftwareVersion:       "v1.27.6+k3s1",
 				SoftwareVersionPrefix: "k3s",
+				BootType:              versioneer.BootTypeNonUKI,
 			}
 		})
 
@@ -192,6 +196,7 @@ var _ = Describe("TagList", func() {
 				Version:               "v2.4.2-rc1",
 				SoftwareVersion:       "v1.27.6+k3s1",
 				SoftwareVersionPrefix: "k3s",
+				BootType:              versioneer.BootTypeNonUKI,
 			}
 		})
 
@@ -214,6 +219,7 @@ var _ = Describe("TagList", func() {
 				Version:               "v2.4.2-rc1",
 				SoftwareVersion:       "v1.27.6+k3s1",
 				SoftwareVersionPrefix: "k3s",
+				BootType:              versioneer.BootTypeNonUKI,
 			}
 		})
 
@@ -250,6 +256,7 @@ var _ = Describe("TagList", func() {
 					Version:               "v2.4.2-rc1",
 					SoftwareVersion:       "v1.27.6+k3s1",
 					SoftwareVersionPrefix: "k3s",
+					BootType:              versioneer.BootTypeNonUKI,
 				}
 			})
 
@@ -284,6 +291,7 @@ var _ = Describe("TagList", func() {
 					Version:               "v2.4.2-rc1",
 					SoftwareVersion:       "",
 					SoftwareVersionPrefix: "k3s",
+					BootType:              versioneer.BootTypeNonUKI,
 				}
 			})
 
@@ -308,6 +316,7 @@ var _ = Describe("TagList", func() {
 					Arch:            "amd64",
 					Version:         "v2.4.1",
 					SoftwareVersion: "",
+					BootType:        versioneer.BootTypeNonUKI,
 				}
 			})
 
@@ -335,6 +344,7 @@ var _ = Describe("TagList", func() {
 					Version:               "v2.4.1",
 					SoftwareVersion:       "v1.28.3+k3s1",
 					SoftwareVersionPrefix: "k3s",
+					BootType:              versioneer.BootTypeNonUKI,
 				}
 			})
 

@@ -20,6 +20,7 @@ var _ = Describe("BootableName", func() {
 			Version:               "v2.4.2",
 			SoftwareVersion:       "v1.26.9+k3s1",
 			SoftwareVersionPrefix: "k3s",
+			BootType:              versioneer.BootTypeNonUKI,
 		}
 	})
 
